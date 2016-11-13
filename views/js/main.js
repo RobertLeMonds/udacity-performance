@@ -515,6 +515,9 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
+  //Based on https://jsperf.com/getelementsbyclassname-or-queryselectorall
+  //Changed from querySelector to getElements in order to increase efficient loading. 
+  //querySelector is broad vs getElement is specific.
   var items = document.getElementsByClassName('mover');
   var scroller = document.body.scrollTop;
 
@@ -525,7 +528,7 @@ function updatePositions() {
     repeat.push(Math.sin((scroller / 1250) + i));
   }
 
-
+  //Was changed to translate vs basicLeft due to performance increase. Transform only triggers composite, not painting.
   for (var i = 0; i < items.length; i++) {
     var phase = repeat[i % 5];
     items[i].style.transform = 'translateX(' + 100 * phase + 'px)';
@@ -548,6 +551,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
+  //Reduced from 200 to 32 for additional performance tweak.
   for (var i = 0; i < 32; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
@@ -556,6 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.style.left = (i % cols) * s + 'px';
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
+    //read above line 521 for getElement change
     document.getElementById("movingPizzas1").appendChild(elem);
   }
   updatePositions();
