@@ -514,10 +514,17 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-  var scroller = (document.body.scrollTop / 1250);
-  for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin(scroller + (i % 5));
+  var items = document.getElementsByClassName('mover');
+  var scroller = document.body.scrollTop;
+
+  var repeat = [];
+  var i;
+
+  for (i = 0; i < 5; i++) {
+    repeat.push(Math.sin((top / 1250) + 1));
+  }
+  for (i = 0; i < items.length; i++) {
+    var phase = repeat[i % 5];
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
